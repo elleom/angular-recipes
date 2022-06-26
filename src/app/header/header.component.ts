@@ -8,12 +8,6 @@ import {Component} from "@angular/core";
 })
 export class HeaderComponent {
 
-  //creates an event trigger
-  @Output()
-  featureSelected = new EventEmitter<string>();
-
   collapsed: boolean = true;
-  onSelect(feature: string) {
-    this.featureSelected.emit(feature)
-  }
+
 }
