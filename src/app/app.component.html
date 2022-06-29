@@ -1,10 +1,8 @@
-<app-header (featureSelected)="onNavigate($event)"></app-header> <!-- feature selected is the name we added to the emitter -->
+<app-header></app-header> <!-- feature selected is the name we added to the emitter -->
 <div class="container">
   <div class="row">
     <div class="col-md-12">
       <router-outlet></router-outlet>
-<!--      <app-recipes *ngIf="loadedFeature === 'recipe'"></app-recipes>-->
-<!--      <app-shopping-list *ngIf="loadedFeature !== 'recipe'"></app-shopping-list>-->
     </div>
   </div>
 </div>
