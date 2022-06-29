@@ -39,7 +39,7 @@ export class RecipeService {
     this.slService.addIngredients(ingredients);
   }
 
-  getRecipeByIndex(index: number) {
+  getRecipeById(index: number) {
     return this.recipes[index];
   }
 }

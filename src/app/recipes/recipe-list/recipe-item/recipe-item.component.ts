@@ -10,7 +10,7 @@ export class RecipeItemComponent implements OnInit {
 
  @Input() recipe:Recipe
   //Input decorator allows the binding of data from outside => into the component
-  constructor() { }
+  @Input() index: number
 
   ngOnInit(): void {
   }
