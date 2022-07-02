@@ -9,9 +9,6 @@ export class RecipeService {
 
   constructor(private slService: ShoppingListService) {
   }
-
-  recipeSelected = new Subject<Recipe>();
-
   private recipes: Recipe[] = [
     new Recipe(
       1,
