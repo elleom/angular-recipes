@@ -10,7 +10,9 @@
             id="name"
             name="name"
             type="text"
+            required
           >
+          <span class="alert-info" *ngIf="form.touched && form.invalid">Required!</span>
         </div>
         <div class="col-sm-2 form-group">
           <label for="amount">Amount</label>
@@ -20,7 +22,11 @@
             class="form-control"
             id="amount"
             type="number"
+            min="0"
+            max="1000"
+            required
             >
+          <span class="alert-info" *ngIf="form.touched && form.invalid">Required!</span>
         </div>
       </div>
       <div class="row">
@@ -28,6 +34,7 @@
           <button
             class="btn btn-success"
             type="submit"
+            [disabled]="!form.valid"
           >Add</button>
           <button class="btn btn-danger" type="button">Delete</button>
           <button class="btn btn-primary" type="button">Clear</button>
