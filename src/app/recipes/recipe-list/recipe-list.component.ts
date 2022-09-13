@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Recipe} from "../recipe.model";
 import {RecipeService} from "../recipe.service";
 import {ActivatedRoute, Router} from "@angular/router";
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-recipe-list',
@@ -9,6 +10,7 @@ import {ActivatedRoute, Router} from "@angular/router";
   styleUrls: ['./recipe-list.component.css']
 })
 export class RecipeListComponent implements OnInit {
+  recipesObservable: Observable<Recipe[]>
 
   recipes: Recipe[];
   constructor(private recipeService: RecipeService,
@@ -18,6 +20,10 @@ export class RecipeListComponent implements OnInit {
 
   ngOnInit(): void {
     this.recipes = this.recipeService.getRecipes();
+
+    this.recipeService.recipesChanged.subscribe((recipesData: Recipe[]) => {
+      this.recipes = recipesData;
+    })
   }
 
   onNewRecipe() {
