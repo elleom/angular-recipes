@@ -2,8 +2,13 @@ import {Component} from "@angular/core";
 
 @Component({
   selector: 'app-auth',
-  templateUrl: 'app.component.html'
+  templateUrl: 'auth.component.html'
 })
 export class AuthComponent {
+  isLoginView = true;
+
+  onSwitchMode(){
+    this.isLoginView = !this.isLoginView;
+  }
 
 }
