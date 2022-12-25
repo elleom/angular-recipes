@@ -1,6 +1,13 @@
 <div class="row">
   <div class="col-xs-12 col-md-6 col-md-offset-3">
-    <form #authForm="ngForm" (ngSubmit)="onSubmit(authForm)" >
+    <div *ngIf="isLoading"  style="text-align: center">
+      <app-spinner ></app-spinner>
+    </div>
+    <div *ngIf="error"  class="alert alert-danger">
+      <p >{{ errorMessage }}</p>
+    </div>
+
+    <form *ngIf="!isLoading" #authForm="ngForm" (ngSubmit)="onSubmit(authForm)" >
       <div class="form-group">
         <label for="email">E-mail</label>
         <input
@@ -29,7 +36,7 @@
         <button class="btn btn-primary" type="submit" [disabled]="!authForm.valid">{{ isLoginView ? 'Sign in' : 'Sign up'}}</button>
         |
         <button class="btn btn-secondary" (click)="onSwitchMode()"
-                type="button">{{ isLoginView ? 'Sign up' : 'Sign in'}}</button>
+                type="button">{{ isLoginView ? 'Switch to Sign up' : 'Switch to Sign in'}}</button>
       </div>
     </form>
   </div>
