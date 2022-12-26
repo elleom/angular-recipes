@@ -1,7 +1,9 @@
 import {Component} from "@angular/core";
 import {NgForm} from "@angular/forms";
-import {AuthService} from "./auth.service";
+import {AuthResponseData, AuthService} from "./auth.service";
 import {map} from "rxjs/operators";
+import {Router} from "@angular/router";
+import {Observable} from "rxjs";
 
 
 @Component({
@@ -14,7 +16,8 @@ export class AuthComponent {
   errorMessage: string;
   isLoading: boolean = false;
 
-  constructor(private auth: AuthService) {
+
+  constructor(private auth: AuthService, private router: Router) {
   }
 
   onSwitchMode() {
@@ -24,6 +27,9 @@ export class AuthComponent {
   onSubmit(authForm: NgForm) {
     this.isLoading = true;
     this.error = false;
+
+    let authObs: Observable<AuthResponseData>
+
     if (!authForm.valid) {
       return;
     }
@@ -31,23 +37,19 @@ export class AuthComponent {
     const password = authForm.value.password;
 
     if (this.isLoginView) {
-      this.auth.signIn(email, password).subscribe(responseData => {
-        this.isLoading = false
-      }, logInError => {
-        this.error = true;
-        this.errorMessage = logInError.error.error.message;
-        this.isLoading = false
-      })
+      authObs = this.auth.signIn(email, password)
     } else {
-      this.auth.signUp(email, password)
-        .subscribe(async responseData => {
-          this.isLoading = false
-        }, registrationError => {
-          this.error = true;
-          this.errorMessage = registrationError.error.message;
-          this.isLoading = false
-        })
+      authObs = this.auth.signUp(email, password)
     }
+
+    authObs.subscribe(responseData => {
+      this.isLoading = false
+
+    }, logInError => {
+      this.error = true;
+      this.errorMessage = logInError
+      this.isLoading = false
+    })
     authForm.reset();
   }
 }

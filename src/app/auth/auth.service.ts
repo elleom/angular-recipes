@@ -1,9 +1,10 @@
 import {Injectable} from "@angular/core";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {environment} from "../../environments/environment";
-import {Observable} from "rxjs";
+import {Observable, throwError} from "rxjs";
+import {catchError} from "rxjs/operators";
 
-interface AuthResponseData {
+export interface AuthResponseData {
   kind: string,
   idToken: string,
   email: string,
@@ -27,13 +28,14 @@ export class AuthService {
   constructor(private http: HttpClient) {
   }
 
-  signUp(email: string, password: string): Observable<Object> {
+  signUp(email: string, password: string): Observable<AuthResponseData> {
     return this.http.post<AuthResponseData>(this.signUpEndpoint,
       {
         email: email,
         password: password,
         returnSecuredToken: true
       })
+      .pipe(catchError(this.handleError))
   }
 
   signIn(email: string, password: string) {
@@ -41,7 +43,23 @@ export class AuthService {
       email: email,
       password: password,
       returnSecuredToken: true
-    })
+    }).pipe(catchError(this.handleError))
+  }
+
+  private handleError(errorResponse: HttpErrorResponse) {
+    let errorMessage = 'Something went wrong'
+    if (!errorResponse.error || !errorResponse.error.error) {
+      return throwError(errorMessage)
+    }
+    switch (errorResponse.error.error.message) {
+      case 'EMAIL_EXISTS':
+        return throwError('Email in use')
+      case 'INVALID_PASSWORD':
+      case 'EMAIL_NOT_FOUND':
+        return throwError('Wrong Credentials')
+      default:
+        return throwError(errorMessage);
+    }
   }
 
 }
